@@ -3,7 +3,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
 use App\Models\User;
 
 class AuthController extends Controller
@@ -25,7 +28,6 @@ class AuthController extends Controller
 
         $user = auth()->user();
 
-        //$accessToken = auth()->user()->createToken('authToken')->accessToken;
         $token = $user->createToken('authToken', ['server:update']);
 
         return response([
@@ -35,20 +37,27 @@ class AuthController extends Controller
     }
     
     public function register(Request $request){
-        $validatedData = $request->validate([
+        $validator = Validator::make($request->all(), [
+            'id_evento' => 'required',
             'name' => 'required|string',
             'email' => 'required|string|email|unique:users',
-            'password' => 'required|string'
+            'password' => 'required|string|min:8|confirmed'
         ]);
 
-        $validatedData['password'] = bcrypt($request->input('password'));
-        
-        $user = User::create($validatedData);
+        if($validator->fails()){
+            return response()->json($validator->errors(), 400);
+        }
 
-        //$accessToken = $user->createToken('authToken')->accessToken;
+        $request->merge([
+            'id' => Str::uuid()->toString(),
+            'password' => Hash::make($request->input('password'))
+        ]);
+
+        $user = User::create($request->input());
+
         $token = $user->createToken('authToken');
 
-        return response([
+        return response()->json([
             'user' => $user, 
             'access_token' => $token->plainTextToken
         ]);

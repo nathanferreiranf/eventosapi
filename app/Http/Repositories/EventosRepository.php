@@ -1,6 +1,6 @@
 <?php namespace App\Http\Repositories;
 
-use App\Http\Models\Eventos;
+use App\Models\Eventos;
 use Illuminate\Support\Str;
 
 class EventosRepository {
@@ -12,21 +12,14 @@ class EventosRepository {
         
         return Eventos::select(
             'eventos.*'
-        )
-        ->selectRaw('date_format(eventos.dt_inicio, "%d/%m/%Y %H:%i") as dt_inicio_format')
-        ->selectRaw('date_format(eventos.dt_fim, "%d/%m/%Y %H:%i") as dt_fim_format')
-        ->selectRaw('date_format(eventos.dt_inicio, "%H:%i") as hora_inicio')
-        ->selectRaw('date_format(eventos.dt_fim, "%H:%i") as hora_fim')
-        ->where($filtros);
+        )->where($filtros);
     }
 
     public function show($id)
     {
         return Eventos::select(
             'eventos.*'
-        )->selectRaw('date_format(eventos.dt_inicio, "%H:%i") as hora_inicio')
-        ->selectRaw('date_format(eventos.dt_fim, "%H:%i") as hora_fim')
-        ->where('eventos.id', $id)->first();
+        )->where('eventos.id', $id)->first();
     }
 
     public function create($dados)
