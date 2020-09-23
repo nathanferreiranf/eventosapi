@@ -28,7 +28,7 @@ class AuthController extends Controller
 
         $user = auth()->user();
 
-        $token = $user->createToken('authToken', ['server:update']);
+        $token = $user->createToken('authToken');
 
         return response([
             'user' => $user,
