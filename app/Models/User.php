@@ -18,11 +18,15 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
+<<<<<<< HEAD
         'id',
         'id_evento',
         'name', 
         'email', 
         'password',
+=======
+        'name', 'email', 'password',
+>>>>>>> e460c6126a4bdf1f1c4dace46f460d0b948626c3
     ];
 
     /**
@@ -42,6 +46,9 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+<<<<<<< HEAD
 
     public $incrementing = false;
+=======
+>>>>>>> e460c6126a4bdf1f1c4dace46f460d0b948626c3
 }

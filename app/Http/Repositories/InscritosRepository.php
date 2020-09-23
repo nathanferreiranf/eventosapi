@@ -1,6 +1,10 @@
 <?php namespace App\Http\Repositories;
 
+<<<<<<< HEAD
 use App\Models\User;
+=======
+use App\User;
+>>>>>>> e460c6126a4bdf1f1c4dace46f460d0b948626c3
 use Illuminate\Support\Str;
 
 class InscritosRepository {
@@ -25,6 +29,10 @@ class InscritosRepository {
     public function create($dados)
     {   
         $dados['id'] = Str::uuid();
+<<<<<<< HEAD
+=======
+
+>>>>>>> e460c6126a4bdf1f1c4dace46f460d0b948626c3
         $inscrito = New User($dados);
         $data = Array(
             'success' => $inscrito->save(),
