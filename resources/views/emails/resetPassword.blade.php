@@ -10,7 +10,7 @@
 
 Olá {{ $inscrito['name'] }}, recebemos uma solicitação de redefinição de senha.
 
-@component('mail::button', ['url' => $inscrito['url_evento'].'/reset-password/'.$inscrito['id']])
+@component('mail::button', ['url' => $inscrito['url_evento'].'/resetar-senha/'.$inscrito['id']])
 Redefinir senha
 @endcomponent
 
