@@ -7,20 +7,20 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 
-class Confirmation360 extends Mailable
+class ResetPassword extends Mailable
 {
     use Queueable, SerializesModels;
 
-    protected $data;
+    protected $inscrito;
 
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct($params = null)
+    public function __construct($inscrito)
     {
-        $this->data = $params;
+        $this->inscrito = $inscrito;
     }
 
     /**
@@ -30,6 +30,8 @@ class Confirmation360 extends Mailable
      */
     public function build()
     {
-        return $this->view('emails.verification');
+        return $this->markdown('emails.resetPassword')->with([
+            'inscrito' => $this->inscrito,
+        ]);
     }
 }

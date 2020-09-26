@@ -26,4 +26,7 @@ Route::post('/register', [AuthController::class, 'register']);
 
 Route::resource('/eventos', EventosController::class);
 
-Route::post('/send-confirmation', [EmailsController::class, 'sendEmail']);
+Route::prefix('emails')->group(function () {
+    Route::post('/reset-password/{email}', [EmailsController::class, 'sendResetPassword']);
+    //Route::post('/confirmation', [EmailsController::class, 'sendConfirmation']);
+});

@@ -14,7 +14,9 @@ class Eventos extends Model
     protected $fillable = [
         'id',
         'nm_evento',
-        'slug_evento'
+        'slug_evento',
+        'url',
+        'logo'
     ];
     protected $dates = ['created_at', 'updated_at', 'deleted_at'];
     public $incrementing = false;
