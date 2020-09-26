@@ -21,7 +21,12 @@ class User extends Authenticatable
         'id',
         'id_evento',
         'name', 
-        'email', 
+        'email',
+        'telefone_celular',
+        'estado',
+        'cidade',
+        'escolaridade',
+        'profissao',
         'password',
     ];
 
