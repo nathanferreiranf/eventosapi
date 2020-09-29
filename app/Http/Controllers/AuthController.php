@@ -41,7 +41,15 @@ class AuthController extends Controller
             'id_evento' => 'required',
             'name' => 'required|string',
             'email' => 'required|string|email|unique:users',
-            'password' => 'required|string|min:8|confirmed'
+            'password' => 'required|string|min:8',
+            'password_confirmation' => ['required', function ($attribute, $value, $fail) use ($request){
+                if ($value != $request->password) {
+                    $fail('O campo senha de confirmação não confere.');
+                }
+            }],
+            'google_recaptcha' => 'required'
+        ],[
+            'google_recaptcha.required' => 'Você precisa informar que não é um robô.'
         ]);
 
         if($validator->fails()){
