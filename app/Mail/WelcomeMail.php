@@ -29,6 +29,8 @@ class WelcomeMail extends Mailable
      */
     public function build()
     {
-        return $this->subject($this->data->subject)->markdown($this->data->markdown, ['data' => $this->data]);
+        return $this->subject($this->data->subject)
+                    ->from(env('MAIL_FROM_ADDRESS'), $this->data->name_company)
+                    ->markdown($this->data->markdown, ['data' => $this->data]);
     }
 }
