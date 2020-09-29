@@ -30,4 +30,6 @@ Route::prefix('emails')->group(function () {
     Route::post('/reset-password/{email}', [EmailsController::class, 'sendResetPassword']);
     Route::put('/reset-password/{id_user}', [EmailsController::class, 'resetPassword']);
     //Route::post('/confirmation', [EmailsController::class, 'sendConfirmation']);
+
+    Route::post('/welcome', [EmailsController::class, 'sendWelcome']);
 });

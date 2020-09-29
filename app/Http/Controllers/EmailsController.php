@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Hash;
 use App\Mail\Confirmation;
 use App\Mail\ResetPassword;
+use App\Mail\WelcomeMail;
 use App\Http\Repositories\EventosRepository;
 use App\Http\Repositories\InscritosRepository;
 use DateTime;
@@ -68,5 +69,9 @@ class EmailsController extends Controller
             'user' => $user,
             'access_token' => $token->plainTextToken
         ]);
+    }
+
+    public function sendWelcome(Request $request){
+        Mail::to($request->to)->send(new WelcomeMail($request));
     }
 }
