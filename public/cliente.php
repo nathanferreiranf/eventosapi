@@ -24,6 +24,8 @@ while ($row = mysqli_fetch_array( $result_query )) {
     array_push($data, $row);
 }
 
+mysqli_close($link);
+
 
 echo json_encode($data);
 ?>
