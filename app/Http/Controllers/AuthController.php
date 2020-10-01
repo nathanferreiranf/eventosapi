@@ -17,7 +17,7 @@ class AuthController extends Controller
      */
     public function login(Request $request)
     {
-        $loginData = $request->validate([
+        /*$loginData = $request->validate([
             'email' => 'required|string|email',
             'password' => 'required|string'
         ]);
@@ -33,7 +33,9 @@ class AuthController extends Controller
         return response([
             'user' => $user,
             'access_token' => $token->plainTextToken
-        ]);
+        ]);*/
+
+        return response()->json($request->input);
     }
     
     public function register(Request $request){
