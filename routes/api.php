@@ -23,7 +23,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::post('/login', function (){
     return response()->json(true);
-})->middleware('throttle:300,1');
+})->middleware('throttle:limitusers');
 
 Route::post('/register', [AuthController::class, 'register']);
 
