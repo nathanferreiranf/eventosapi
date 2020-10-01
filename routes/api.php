@@ -21,7 +21,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('/login', [AuthController::class, 'login']);
+Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:30,1');
 Route::post('/register', [AuthController::class, 'register']);
 
 Route::resource('/eventos', EventosController::class);
