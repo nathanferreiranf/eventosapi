@@ -2,12 +2,12 @@
 header('Content-Type: application/json');
 
 # Substitua abaixo os dados, de acordo com o banco criado
-$user = "root";
-$password = ""; 
-$database = "eventos"; 
+$user = "gotec";
+$password = "gotec_adm_sql"; 
+$database = "eventosapi"; 
 
 # O hostname deve ser sempre localhost 
-$hostname = "127.0.0.1"; 
+$hostname = "mydbcaseof.cxvv0uf8ozxe.us-east-1.rds.amazonaws.com"; 
 
 # Conecta com o servidor de banco de dados 
 $link = mysqli_connect($hostname, $user, $password, $database);
