@@ -26,6 +26,21 @@ while ($row = mysqli_fetch_array( $result_query )) {
 
 mysqli_close($link);
 
+//Criamos uma função que recebe um texto como parâmetro.
+function gravar($texto){
+	//Variável arquivo armazena o nome e extensão do arquivo.
+	$arquivo = "meu_arquivo.txt";
+	
+	//Variável $fp armazena a conexão com o arquivo e o tipo de ação.
+	$fp = fopen($arquivo, "a+");
 
-echo json_encode($data);
+	//Escreve no arquivo aberto.
+	fwrite($fp, $texto);
+	
+	//Fecha o arquivo.
+	fclose($fp);
+}
+
+gravar(json_encode($data));
+
 ?>
