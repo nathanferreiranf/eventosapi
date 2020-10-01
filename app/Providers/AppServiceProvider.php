@@ -31,7 +31,7 @@ class AppServiceProvider extends ServiceProvider
         Schema::defaultStringLength(191);
 
         RateLimiter::for('limitusers', function (Request $request) {
-            return Limit::none()->perMinute(3);
+            return Limit::none();
         });
     }
 }
