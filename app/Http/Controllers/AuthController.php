@@ -17,7 +17,7 @@ class AuthController extends Controller
      */
     public function login(Request $request)
     {
-        /*$loginData = $request->validate([
+        $loginData = $request->validate([
             'email' => 'required|string|email',
             'password' => 'required|string'
         ]);
@@ -33,16 +33,23 @@ class AuthController extends Controller
         return response([
             'user' => $user,
             'access_token' => $token->plainTextToken
-        ]);*/
-
-        return true;
+        ]);
     }
     
     public function register(Request $request){
         $validator = Validator::make($request->all(), [
             'id_evento' => 'required',
             'name' => 'required|string',
-            'email' => 'required|string|email|unique:users',
+            'email' => ['required', 'string', 'email', function ($attribute, $value, $fail) use ($request){
+                $inscrito = User::where([
+                    ['users.id_evento', '=', $request->id_evento],
+                    ['users.email', '=', $value],
+                ])->first();
+
+                if ($inscrito != null) {
+                    $fail('Este e-mail já está sendo utilizado.');
+                }
+            }],
             'password' => 'required|string|min:8',
             'password_confirmation' => ['required', function ($attribute, $value, $fail) use ($request){
                 if ($value != $request->password) {
