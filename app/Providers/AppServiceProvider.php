@@ -29,8 +29,9 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Schema::defaultStringLength(191);
+
         RateLimiter::for('limitusers', function (Request $request) {
-            return Limit::perMinute(3);
+            return Limit::none()->perMinute(3);
         });
     }
 }
