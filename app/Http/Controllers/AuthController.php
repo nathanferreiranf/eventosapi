@@ -34,8 +34,7 @@ class AuthController extends Controller
             'user' => $user,
             'access_token' => $token->plainTextToken
         ]);*/
-
-        return response()->json($request->input);
+        return response()->json($request->input());
     }
     
     public function register(Request $request){
