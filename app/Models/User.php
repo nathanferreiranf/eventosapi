@@ -24,6 +24,8 @@ class User extends Authenticatable
         'sobrenome',
         'cpf',
         'email',
+        'telefone',
+        'celular',
         'telefone_celular',
         'estado',
         'cidade',
