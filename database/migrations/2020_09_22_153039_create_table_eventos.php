@@ -29,6 +29,6 @@ class CreateTableEventos extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('table_eventos');
+        Schema::dropIfExists('eventos');
     }
 }
