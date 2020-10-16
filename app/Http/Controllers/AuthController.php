@@ -18,6 +18,7 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $loginData = $request->validate([
+            'id_evento' => 'required',
             'email' => 'required|string|email',
             'password' => 'required|string'
         ]);
