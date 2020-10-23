@@ -17,23 +17,32 @@ class AuthController extends Controller
      */
     public function login(Request $request)
     {
-        $loginData = $request->validate([
-            'id_evento' => 'required',
+        $validator = Validator::make($request->all(), [
+            //'id_evento' => 'required',
             'email' => 'required|string|email',
             'password' => 'required|string'
         ]);
 
-        if(!auth()->attempt($loginData)){
-            return response(['message'=>'E-mail e/ou senha inválidos.'], 401);
+        if($validator->fails()){
+            return response()->json($validator->errors(), 400);
         }
 
-        $user = auth()->user();
+        $credentials = $request->only('id_evento', 'email', 'password');
 
-        $token = $user->createToken('authToken');
+        if (!Auth::attempt($credentials)) {
+            return response(['message'=>'E-mail e/ou senha inválidos.'], 401);
+        }
+        
+        $user = User::where('id', auth()->user()->id)->first();
+        $user->update([
+            'ultimo_acesso' => date('Y-m-d H:i:s')
+        ]);
+
+        //$token = $user->createToken('authToken');
 
         return response([
             'user' => $user,
-            'access_token' => $token->plainTextToken
+            //'access_token' => $token->plainTextToken
         ]);
     }
     
@@ -79,5 +88,11 @@ class AuthController extends Controller
             'user' => $user, 
             'access_token' => $token->plainTextToken
         ]);
+    }
+
+    public function verifyLogin($id_user){
+        $user = User::where('id', $id_user)->first();
+
+        return response()->json(['ultimo_acesso' => $user->ultimo_acesso]);
     }
 }

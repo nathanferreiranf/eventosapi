@@ -23,6 +23,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
+Route::get('/verify-login/{id_user}', [AuthController::class, 'verifyLogin']);
 
 Route::resource('/eventos', EventosController::class);
 
