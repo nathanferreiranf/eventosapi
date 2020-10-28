@@ -33,7 +33,8 @@ class User extends Authenticatable
         'profissao',
         'fl_interesse',
         'password',
-        'ultimo_acesso'
+        'ultimo_acesso',
+        'fl_password_set'
     ];
 
     /**

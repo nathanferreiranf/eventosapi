@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use App\Models\User;
+use App\Http\Repositories\EventosRepository;
 
 class AuthController extends Controller
 {
@@ -15,10 +16,18 @@ class AuthController extends Controller
      * Login user and create token
      *
      */
+    private $eventosRepository;
+
+    public function __construct(
+        EventosRepository $eventosRepo
+    ){
+        $this->eventosRepository = $eventosRepo;
+    }
+
     public function login(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            //'id_evento' => 'required',
+            'id_evento' => 'required',
             'email' => 'required|string|email',
             'password' => 'required|string'
         ]);
@@ -94,5 +103,81 @@ class AuthController extends Controller
         $user = User::where('id', $id_user)->first();
 
         return response()->json(['ultimo_acesso' => $user->ultimo_acesso]);
+    }
+
+    public function verifyPasswordSet(Request $request){
+        $validator = Validator::make($request->all(), [
+            'id_evento' => ['required', function ($attribute, $value, $fail) use ($request){
+                $evento = $this->eventosRepository->show($request->id_evento);
+
+                if ($evento == null) {
+                    $fail('Evento não encontrado.');
+                }
+            }],
+            'email' => ['required', 'string', 'email', function ($attribute, $value, $fail) use ($request){
+                $user = User::where([
+                    ['id_evento', '=', $request->id_evento],
+                    ['email', '=', $request->email]
+                ])->first();
+
+                if ($user == null) {
+                    $fail('Usuário não cadastrado.');
+                }
+            }]
+        ]);
+
+        if($validator->fails()){
+            return response()->json(['errors' => $validator->errors()], 400);
+        }
+
+        $user = User::where([
+            ['id_evento', '=', $request->id_evento],
+            ['email', '=', $request->email]
+        ])->first();
+
+        return response()->json($user->fl_password_set);
+    }
+
+    public function setPassword($email, Request $request){
+        $validator = Validator::make($request->all(), [
+            'id_evento' => ['required', function ($attribute, $value, $fail) use ($request){
+                $evento = $this->eventosRepository->show($request->id_evento);
+
+                if ($evento == null) {
+                    $fail('Evento não encontrado.');
+                }
+            }],
+            'password' => 'required|string|min:8',
+            'password_confirmation' => ['required', function ($attribute, $value, $fail) use ($request){
+                if ($value != $request->password) {
+                    $fail('O campo senha de confirmação não confere.');
+                }
+            }],
+        ]);
+
+        if($validator->fails()){
+            return response()->json(['errors' => $validator->errors()], 400);
+        }
+
+        $user = User::where([
+            ['id_evento', '=', $request->id_evento],
+            ['email', '=', $request->email]
+        ])->first();
+
+        if($user == null){
+            return response()->json('Usuário não encontrado', 400);
+        }
+
+        $request->merge([
+            'password' => Hash::make($request->input('password')),
+            'fl_password_set' => 1
+        ]);
+
+        $data = Array(
+            'success' => $user->update($request->input()),
+            'user' => $user
+        );
+
+        return response()->json($data);
     }
 }
