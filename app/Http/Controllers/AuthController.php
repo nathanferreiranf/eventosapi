@@ -135,7 +135,7 @@ class AuthController extends Controller
             ['email', '=', $request->email]
         ])->first();
 
-        return response()->json($user->fl_password_set);
+        return response()->json(['user' => $user]);
     }
 
     public function setPassword($email, Request $request){
